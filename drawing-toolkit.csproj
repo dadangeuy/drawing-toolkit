@@ -58,6 +58,11 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="model\canvas\Canvas.cs" />
+    <Compile Include="model\canvas\CanvasState.cs" />
+    <Compile Include="model\canvas\state\CreateLineState.cs" />
+    <Compile Include="model\drawable\DrawableLine.cs" />
+    <Compile Include="model\drawable\IDrawable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainWindow.resx">
