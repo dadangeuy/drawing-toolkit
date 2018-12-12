@@ -14,12 +14,12 @@ namespace drawing_toolkit.controller {
             InitializeRefreshRate();
         }
 
-        public void SelectLineTool() {
-            canvas.State = CreateLineState.Instance;
+        public void SwitchToSelectionTool() {
+            canvas.State = SelectionToolState.Instance;
         }
 
-        public void SelectCurveTool() {
-            canvas.State = CreateCurveState.Instance;
+        public void SwitchToCurveTool() {
+            canvas.State = CurveToolState.Instance;
         }
 
         private void InitializeUi() {

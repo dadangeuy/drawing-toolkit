@@ -5,8 +5,7 @@ using System.Drawing;
 
 namespace drawing_toolkit.model.canvas {
     class Canvas {
-        public CanvasState State { get; set; } = CreateLineState.Instance;
-        private readonly LinkedList<IDrawable> drawableGuides = new LinkedList<IDrawable>();
+        public CanvasState State { get; set; } = SelectionToolState.Instance;
         private readonly LinkedList<IDrawable> drawables = new LinkedList<IDrawable>();
 
         public void AddDrawable(IDrawable drawable) {
@@ -15,14 +14,6 @@ namespace drawing_toolkit.model.canvas {
 
         public void RemoveDrawable(IDrawable drawable) {
             drawables.Remove(drawable);
-        }
-
-        public void AddGuide(IDrawable drawable) {
-            drawableGuides.AddLast(drawable);
-        }
-
-        public void RemoveGuide(IDrawable drawable) {
-            drawableGuides.Remove(drawable);
         }
 
         public void MouseDown(Point location) {
@@ -39,11 +30,9 @@ namespace drawing_toolkit.model.canvas {
 
         public void Draw(Graphics graphics) {
             foreach (var drawable in drawables) drawable.Draw(graphics);
-            foreach (var drawable in drawableGuides) drawable.DrawGuide(graphics);
         }
 
         // State Context
-        public DrawableLine CreateLineState_Line { get; set; }
         public DrawableCurve CreateDrawableState_Curve { get; set; }
         public DrawableCurve AddCurvePointState_Curve { get; set; }
         public int AddCurvePointState_CurveId = -1;

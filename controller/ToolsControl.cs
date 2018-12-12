@@ -4,9 +4,9 @@ using System.Windows.Forms;
 namespace drawing_toolkit.controller {
     class ToolsControl : ToolStrip {
         public event EventHandler SelectCurveTool;
-        public event EventHandler SelectLineTool;
+        public event EventHandler SelectSelectionTool;
         private readonly ToolStripItem curveTool = new ToolStripButton("Curve");
-        private readonly ToolStripItem lineTool = new ToolStripButton("Line");
+        private readonly ToolStripItem selectionTool = new ToolStripButton("Selection");
 
         public ToolsControl() {
             InitializeUi();
@@ -14,12 +14,12 @@ namespace drawing_toolkit.controller {
         }
 
         private void InitializeUi() {
-            Items.Add(lineTool);
+            Items.Add(selectionTool);
             Items.Add(curveTool);
         }
 
         private void InitializeEvent() {
-            lineTool.Click += (sender, args) => SelectLineTool?.Invoke(this, args);
+            selectionTool.Click += (sender, args) => SelectSelectionTool?.Invoke(this, args);
             curveTool.Click += (sender, args) => SelectCurveTool?.Invoke(this, args);
         }
     }

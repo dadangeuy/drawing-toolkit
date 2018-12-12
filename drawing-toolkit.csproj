@@ -60,12 +60,13 @@
     </Compile>
     <Compile Include="model\canvas\Canvas.cs" />
     <Compile Include="model\canvas\CanvasState.cs" />
-    <Compile Include="model\canvas\state\AddCurvePointState.cs" />
     <Compile Include="model\canvas\state\CreateCurveState.cs" />
-    <Compile Include="model\canvas\state\CreateLineState.cs" />
+    <Compile Include="model\canvas\state\SelectionState.cs" />
     <Compile Include="model\drawable\DrawableCurve.cs" />
-    <Compile Include="model\drawable\DrawableLine.cs" />
+    <Compile Include="model\drawable\DrawableState.cs" />
     <Compile Include="model\drawable\IDrawable.cs" />
+    <Compile Include="model\drawable\state\EditState.cs" />
+    <Compile Include="model\drawable\state\LockState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainWindow.resx">

@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
 
 namespace drawing_toolkit.model.drawable {
-    interface IDrawable {
-        void Draw(Graphics graphics);
-        void DrawGuide(Graphics graphics);
+    abstract class IDrawable {
+        public abstract void Draw(Graphics graphics);
+        public virtual void DrawItem(Graphics graphics) { }
+        public virtual void DrawGuide(Graphics graphics) { }
     }
 }

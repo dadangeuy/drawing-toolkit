@@ -1,4 +1,5 @@
-﻿using System;
+﻿using drawing_toolkit.model.drawable.state;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -12,6 +13,7 @@ namespace drawing_toolkit.model.drawable {
         private static readonly Pen CurvePointGuidePen = Pens.Red;
         private static readonly Pen DrawPen = Pens.Black;
         private readonly List<Point> points = new List<Point>();
+        public DrawableState State { get; set; } = EditState.Instance;
 
         public DrawableCurve(Point from, Point to) {
             points.Add(from);
@@ -49,11 +51,15 @@ namespace drawing_toolkit.model.drawable {
             return minDistance <= IntersectDistanceLimit;
         }
 
-        public void Draw(Graphics graphics) {
+        public override void Draw(Graphics graphics) {
+            State.Draw(this, graphics);
+        }
+
+        public override void DrawItem(Graphics graphics) {
             graphics.DrawCurve(DrawPen, points.ToArray());
         }
 
-        public void DrawGuide(Graphics graphics) {
+        public override void DrawGuide(Graphics graphics) {
             graphics.DrawLines(LineGuidePen, points.ToArray());
             foreach (var point in points) graphics.DrawEllipse(CurvePointGuidePen, point.X - 2, point.Y - 2, 4, 4);
         }
