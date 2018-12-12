@@ -6,15 +6,7 @@ using System.Drawing;
 namespace drawing_toolkit.model.canvas {
     class Canvas {
         public CanvasState State { get; set; } = SelectionToolState.Instance;
-        private readonly LinkedList<IDrawable> drawables = new LinkedList<IDrawable>();
-
-        public void AddDrawable(IDrawable drawable) {
-            drawables.AddLast(drawable);
-        }
-
-        public void RemoveDrawable(IDrawable drawable) {
-            drawables.Remove(drawable);
-        }
+        public LinkedList<Drawable> Drawables { get; set; } = new LinkedList<Drawable>();
 
         public void MouseDown(Point location) {
             State.MouseDown(this, location);
@@ -29,7 +21,7 @@ namespace drawing_toolkit.model.canvas {
         }
 
         public void Draw(Graphics graphics) {
-            foreach (var drawable in drawables) drawable.Draw(graphics);
+            foreach (var drawable in Drawables) drawable.Draw(graphics);
         }
 
         // State Context

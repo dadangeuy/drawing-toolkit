@@ -13,7 +13,7 @@ namespace drawing_toolkit.model.canvas.state {
             switch (Mode) {
                 case ToolMode.CREATE:
                     Curve = new DrawableCurve(location, location);
-                    canvas.AddDrawable(Curve);
+                    canvas.Drawables.AddLast(Curve);
                     Mode = ToolMode.RESIZE;
                     break;
                 case ToolMode.ADD_CURVE:

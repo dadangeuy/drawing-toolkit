@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace drawing_toolkit.model.drawable {
-    class DrawableCurve : IDrawable {
+    class DrawableCurve : Drawable {
         private static readonly double IntersectDistanceLimit = 20;
         private static readonly Pen LineGuidePen = new Pen(Color.Red) {
             DashStyle = DashStyle.Dot
@@ -13,7 +13,6 @@ namespace drawing_toolkit.model.drawable {
         private static readonly Pen CurvePointGuidePen = Pens.Red;
         private static readonly Pen DrawPen = Pens.Black;
         private readonly List<Point> points = new List<Point>();
-        public DrawableState State { get; set; } = EditState.Instance;
 
         public DrawableCurve(Point from, Point to) {
             points.Add(from);
@@ -38,7 +37,7 @@ namespace drawing_toolkit.model.drawable {
             points[curveId] = destination;
         }
 
-        public bool Intersect(Point point) {
+        public override bool Intersect(Point point) {
             double minDistance = Double.MaxValue;
             for (int i = 1; i < points.Count; i++) {
                 var a = points[i - 1];
@@ -49,10 +48,6 @@ namespace drawing_toolkit.model.drawable {
                 }
             }
             return minDistance <= IntersectDistanceLimit;
-        }
-
-        public override void Draw(Graphics graphics) {
-            State.Draw(this, graphics);
         }
 
         public override void DrawItem(Graphics graphics) {
