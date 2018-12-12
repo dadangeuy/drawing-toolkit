@@ -25,7 +25,7 @@ namespace drawing_toolkit.model.canvas.state {
         public override void MouseMove(Canvas canvas, PointO location) {
             switch (Mode) {
                 case ToolMode.Move:
-                    var offset = GetOffset(StartLocation, location);
+                    var offset = PointO.FromOffset(StartLocation, location);
                     Drawable.Move(offset);
                     StartLocation = location;
                     break;
@@ -46,10 +46,6 @@ namespace drawing_toolkit.model.canvas.state {
                 if (drawable.Intersect(location))
                     return drawable;
             return null;
-        }
-
-        private PointO GetOffset(PointO from, PointO to) {
-            return new PointO(to.X - from.X, to.Y - from.Y);
         }
 
         private enum ToolMode {

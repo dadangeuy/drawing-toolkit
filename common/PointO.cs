@@ -25,12 +25,18 @@ namespace drawing_toolkit.common {
             Y += offset.Y;
         }
 
-        public static PointO OffsetOf(PointO from, PointO to) {
+        public Point GetPoint() {
+            return new Point(X, Y);
+        }
+
+        public static PointO FromOffset(PointO from, PointO to) {
             return new PointO(to.X - from.X, to.Y - from.Y);
         }
 
-        public Point GetPoint() {
-            return new Point(X, Y);
+        public static Point[] ToPrimitiveArray(PointO[] points) {
+            var primitivePoints = new Point[points.Length];
+            for (var i = 0; i < points.Length; i++) primitivePoints[i] = points[i].GetPoint();
+            return primitivePoints;
         }
     }
 }

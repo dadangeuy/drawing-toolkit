@@ -35,7 +35,7 @@ namespace drawing_toolkit.model.canvas.state {
                     Curve.SetEndPoint(location);
                     break;
                 case ToolMode.MoveCurve:
-                    var offset = PointO.OffsetOf(CurvePoint, location);
+                    var offset = PointO.FromOffset(CurvePoint, location);
                     CurvePoint.Offset(offset);
                     break;
             }

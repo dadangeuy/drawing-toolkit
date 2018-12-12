@@ -34,11 +34,11 @@ namespace drawing_toolkit.model.drawable {
         }
 
         public override void DrawItem(Graphics graphics) {
-            graphics.DrawCurve(DrawPen, GetPrimitivePoints());
+            graphics.DrawCurve(DrawPen, PointO.ToPrimitiveArray(points.ToArray()));
         }
 
         public override void DrawGuide(Graphics graphics) {
-            graphics.DrawLines(LineGuidePen, GetPrimitivePoints());
+            graphics.DrawLines(LineGuidePen, PointO.ToPrimitiveArray(points.ToArray()));
             foreach (var point in points) graphics.DrawEllipse(CurvePointGuidePen, point.X - 2, point.Y - 2, 4, 4);
         }
 
@@ -104,12 +104,6 @@ namespace drawing_toolkit.model.drawable {
         private double PerpendicularDistance(PointO p, float a, float b, float c) {
             // reference: https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/
             return Math.Abs(a * p.X + b * p.Y + c) / Math.Sqrt(a * a + b * b);
-        }
-
-        private Point[] GetPrimitivePoints() {
-            var pPoints = new Point[points.Count];
-            for (var i = 0; i < points.Count; i++) pPoints[i] = points[i].GetPoint();
-            return pPoints;
         }
     }
 }
