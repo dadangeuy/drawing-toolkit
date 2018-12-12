@@ -7,9 +7,11 @@ using drawing_toolkit.common;
 namespace drawing_toolkit.model.drawable {
     internal class DrawableCurve : Drawable {
         private const double IntersectDistanceLimit = 20;
+
         private static readonly Pen LineGuidePen = new Pen(Color.Red) {
             DashStyle = DashStyle.Dot
         };
+
         private static readonly Pen CurvePointGuidePen = Pens.Red;
         private static readonly Pen DrawPen = Pens.Black;
         private readonly List<PointO> points = new List<PointO>();
@@ -27,10 +29,17 @@ namespace drawing_toolkit.model.drawable {
             points[points.Count - 1] = newEndPoint;
         }
 
-        public int AddCurve(PointO point) {
-            var position = FindBestPosition(point);
-            if (position != -1) points.Insert(position, point);
-            return position;
+        public void AddCurve(PointO point) {
+            // try use old curve
+            var position = FindBestPointPosition(point);
+            if (position != -1) {
+                points[position] = point;
+            }
+            else {
+                // try add curve between 2 point
+                position = FindBestPosition(point);
+                if (position != -1) points.Insert(position, point);
+            }
         }
 
         public override void DrawItem(Graphics graphics) {
@@ -57,7 +66,28 @@ namespace drawing_toolkit.model.drawable {
                     minDistance = Math.Min(minDistance, distance);
                 }
             }
+
             return minDistance <= IntersectDistanceLimit;
+        }
+
+        private int FindBestPointPosition(PointO point) {
+            var bestPointPosition = -1;
+            var minDistance = double.MaxValue;
+            for (var i = 0; i < points.Count; i++) {
+                var distance = PythagorasDistance(point, points[i]);
+                if (distance < IntersectDistanceLimit && distance < minDistance) {
+                    bestPointPosition = i;
+                    minDistance = distance;
+                }
+            }
+
+            return bestPointPosition;
+        }
+
+        private double PythagorasDistance(PointO a, PointO b) {
+            var dx = a.X - b.X;
+            var dy = a.Y - b.Y;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
         private int FindBestPosition(PointO point) {
@@ -72,6 +102,7 @@ namespace drawing_toolkit.model.drawable {
                 bestPosition = i;
                 minDistance = distance;
             }
+
             return bestPosition;
         }
 
@@ -83,12 +114,12 @@ namespace drawing_toolkit.model.drawable {
 
         private double FindAngle(PointO a, PointO b, PointO c) {
             // reference: https://stackoverflow.com/questions/19729831/angle-between-3-points-in-3d-space
-            var v1 = new double[] { a.X - b.X, a.Y - b.Y };
-            var v2 = new double[] { c.X - b.X, c.Y - b.Y };
+            var v1 = new double[] {a.X - b.X, a.Y - b.Y};
+            var v2 = new double[] {c.X - b.X, c.Y - b.Y};
             var v1Mag = Math.Sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
             var v2Mag = Math.Sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
-            var v1Norm = new[] { v1[0] / v1Mag, v1[1] / v1Mag };
-            var v2Norm = new[] { v2[0] / v2Mag, v2[1] / v2Mag };
+            var v1Norm = new[] {v1[0] / v1Mag, v1[1] / v1Mag};
+            var v2Norm = new[] {v2[0] / v2Mag, v2[1] / v2Mag};
             var res = v1Norm[0] * v2Norm[0] + v1Norm[1] * v2Norm[1];
             return Math.Acos(res) * 180.0 / 3.141592653589793;
         }
