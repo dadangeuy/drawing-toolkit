@@ -4,10 +4,10 @@ using drawing_toolkit.common;
 
 namespace drawing_toolkit.model.drawable {
     internal class DrawableGroup : Drawable {
-        private readonly LinkedList<Drawable> drawables = new LinkedList<Drawable>();
+        private readonly LinkedList<Drawable> drawables;
 
-        public void Add(Drawable drawable) {
-            drawables.AddLast(drawable);
+        public DrawableGroup(LinkedList<Drawable> drawables) {
+            this.drawables = drawables;
         }
 
         public override void DrawItem(Graphics graphics) {

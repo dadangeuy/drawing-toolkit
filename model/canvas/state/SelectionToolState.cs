@@ -13,6 +13,7 @@ namespace drawing_toolkit.model.canvas.state {
 
         public override void KeyDown(Canvas canvas, bool shift, bool ctrl, Keys keys) {
             if (keys == Keys.ShiftKey) Mode = ToolMode.MultiSelect;
+            else if (ctrl && keys == Keys.G) GroupDrawables(canvas);
         }
 
         public override void KeyUp(Canvas canvas, bool shift, bool ctrl, Keys keys) {
@@ -73,6 +74,14 @@ namespace drawing_toolkit.model.canvas.state {
         private static void ToggleDrawableState(Drawable drawable) {
             if (drawable.State == LockState.Instance) drawable.State = EditState.Instance;
             else drawable.State = LockState.Instance;
+        }
+
+        private void GroupDrawables(Canvas canvas) {
+            var drawables = GetDrawableWithState(canvas, EditState.Instance);
+            if (drawables.Count < 2) return;
+            foreach (var drawable in drawables) canvas.Drawables.Remove(drawable);
+            var drawableGroup = new DrawableGroup(drawables);
+            canvas.Drawables.AddLast(drawableGroup);
         }
 
         private static LinkedList<Drawable> GetDrawableWithState(Canvas canvas, DrawableState state) {
