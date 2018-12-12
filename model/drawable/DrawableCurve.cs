@@ -12,7 +12,7 @@ namespace drawing_toolkit.model.drawable {
         };
         private static readonly Pen CurvePointGuidePen = Pens.Red;
         private static readonly Pen DrawPen = Pens.Black;
-        private readonly List<Point> points = new List<Point>();
+        private List<Point> points = new List<Point>();
 
         public DrawableCurve(Point from, Point to) {
             points.Add(from);
@@ -37,6 +37,23 @@ namespace drawing_toolkit.model.drawable {
             points[curveId] = destination;
         }
 
+        public override void DrawItem(Graphics graphics) {
+            graphics.DrawCurve(DrawPen, points.ToArray());
+        }
+
+        public override void DrawGuide(Graphics graphics) {
+            graphics.DrawLines(LineGuidePen, points.ToArray());
+            foreach (var point in points) graphics.DrawEllipse(CurvePointGuidePen, point.X - 2, point.Y - 2, 4, 4);
+        }
+
+        public override void Move(Point offset) {
+            for (int i = 0; i < points.Count; i++) {
+                var point = points[i];
+                point.Offset(offset);
+                points[i] = point;
+            }
+        }
+
         public override bool Intersect(Point point) {
             double minDistance = Double.MaxValue;
             for (int i = 1; i < points.Count; i++) {
@@ -48,15 +65,6 @@ namespace drawing_toolkit.model.drawable {
                 }
             }
             return minDistance <= IntersectDistanceLimit;
-        }
-
-        public override void DrawItem(Graphics graphics) {
-            graphics.DrawCurve(DrawPen, points.ToArray());
-        }
-
-        public override void DrawGuide(Graphics graphics) {
-            graphics.DrawLines(LineGuidePen, points.ToArray());
-            foreach (var point in points) graphics.DrawEllipse(CurvePointGuidePen, point.X - 2, point.Y - 2, 4, 4);
         }
 
         private int FindBestPosition(Point point) {
