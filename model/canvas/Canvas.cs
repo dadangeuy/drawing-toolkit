@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 
 namespace drawing_toolkit.model.canvas {
-    class Canvas {
+    internal class Canvas {
         public CanvasState State { get; set; } = SelectionToolState.Instance;
         public LinkedList<Drawable> Drawables { get; set; } = new LinkedList<Drawable>();
 
@@ -24,10 +24,5 @@ namespace drawing_toolkit.model.canvas {
         public void Draw(Graphics graphics) {
             foreach (var drawable in Drawables) drawable.Draw(graphics);
         }
-
-        // State Context
-        public DrawableCurve CreateDrawableState_Curve { get; set; }
-        public DrawableCurve AddCurvePointState_Curve { get; set; }
-        public int AddCurvePointState_CurveId = -1;
     }
 }

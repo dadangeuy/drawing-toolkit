@@ -1,9 +1,9 @@
 ﻿using drawing_toolkit.common;
-using drawing_toolkit.model.drawable.state;
 using System.Drawing;
+using drawing_toolkit.model.drawable.state;
 
 namespace drawing_toolkit.model.drawable {
-    abstract class Drawable {
+    internal abstract class Drawable {
         public DrawableState State { get; set; } = EditState.Instance;
         public void Draw(Graphics graphics) { State.Draw(this, graphics); }
         public abstract void DrawItem(Graphics graphics);

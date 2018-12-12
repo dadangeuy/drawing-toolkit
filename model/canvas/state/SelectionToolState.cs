@@ -1,23 +1,22 @@
 ﻿using drawing_toolkit.common;
 using drawing_toolkit.model.drawable;
 using drawing_toolkit.model.drawable.state;
-using System.Drawing;
 
 namespace drawing_toolkit.model.canvas.state {
-    class SelectionToolState : CanvasState {
+    internal class SelectionToolState : CanvasState {
         public static readonly SelectionToolState Instance = new SelectionToolState();
-        private static ToolMode Mode { get; set; } = ToolMode.SELECT;
+        private static ToolMode Mode { get; set; } = ToolMode.Select;
         private static Drawable Drawable { get; set; }
         private static PointO StartLocation { get; set; }
 
         public override void MouseDown(Canvas canvas, PointO location) {
             switch (Mode) {
-                case ToolMode.SELECT:
+                case ToolMode.Select:
                     Drawable = GetDrawableAtLocation(canvas, location);
                     if (Drawable != null) {
                         Drawable.State = EditState.Instance;
                         StartLocation = location;
-                        Mode = ToolMode.MOVE;
+                        Mode = ToolMode.Move;
                     }
                     break;
             }
@@ -25,7 +24,7 @@ namespace drawing_toolkit.model.canvas.state {
 
         public override void MouseMove(Canvas canvas, PointO location) {
             switch (Mode) {
-                case ToolMode.MOVE:
+                case ToolMode.Move:
                     var offset = GetOffset(StartLocation, location);
                     Drawable.Move(offset);
                     StartLocation = location;
@@ -35,9 +34,9 @@ namespace drawing_toolkit.model.canvas.state {
 
         public override void MouseUp(Canvas canvas, PointO location) {
             switch (Mode) {
-                case ToolMode.MOVE:
+                case ToolMode.Move:
                     Drawable.State = LockState.Instance;
-                    Mode = ToolMode.SELECT;
+                    Mode = ToolMode.Select;
                     break;
             }
         }
@@ -54,7 +53,7 @@ namespace drawing_toolkit.model.canvas.state {
         }
 
         private enum ToolMode {
-            SELECT, MOVE
+            Select, Move
         }
     }
 }

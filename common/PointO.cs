@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 
 namespace drawing_toolkit.common {
-    class PointO {
+    internal class PointO {
         public int X { get; set; }
         public int Y { get; set; }
 

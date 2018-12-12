@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 namespace drawing_toolkit.controller {
-    class ToolsControl : ToolStrip {
+    internal class ToolsControl : ToolStrip {
         public event EventHandler SelectCurveTool;
         public event EventHandler SelectSelectionTool;
         private readonly ToolStripItem curveTool = new ToolStripButton("Curve");

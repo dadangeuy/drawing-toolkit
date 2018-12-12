@@ -1,19 +1,18 @@
-﻿using drawing_toolkit.common;
-using drawing_toolkit.model.drawable.state;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using drawing_toolkit.common;
 
 namespace drawing_toolkit.model.drawable {
-    class DrawableCurve : Drawable {
-        private static readonly double IntersectDistanceLimit = 20;
+    internal class DrawableCurve : Drawable {
+        private const double IntersectDistanceLimit = 20;
         private static readonly Pen LineGuidePen = new Pen(Color.Red) {
             DashStyle = DashStyle.Dot
         };
         private static readonly Pen CurvePointGuidePen = Pens.Red;
         private static readonly Pen DrawPen = Pens.Black;
-        private List<PointO> points = new List<PointO>();
+        private readonly List<PointO> points = new List<PointO>();
 
         public DrawableCurve(PointO from, PointO to) {
             points.Add(from);
@@ -29,7 +28,7 @@ namespace drawing_toolkit.model.drawable {
         }
 
         public int AddCurve(PointO point) {
-            int position = FindBestPosition(point);
+            var position = FindBestPosition(point);
             if (position != -1) points.Insert(position, point);
             return position;
         }
@@ -49,12 +48,12 @@ namespace drawing_toolkit.model.drawable {
         }
 
         public override bool Intersect(PointO point) {
-            double minDistance = Double.MaxValue;
-            for (int i = 1; i < points.Count; i++) {
+            var minDistance = double.MaxValue;
+            for (var i = 1; i < points.Count; i++) {
                 var a = points[i - 1];
                 var b = points[i];
                 if (InBetween(a, point, b)) {
-                    double distance = PerpendicularDistance(point, a, b);
+                    var distance = PerpendicularDistance(point, a, b);
                     minDistance = Math.Min(minDistance, distance);
                 }
             }
@@ -62,45 +61,43 @@ namespace drawing_toolkit.model.drawable {
         }
 
         private int FindBestPosition(PointO point) {
-            int bestPosition = -1;
-            double minDistance = Double.MaxValue;
-            for (int i = 1; i < points.Count; i++) {
+            var bestPosition = -1;
+            var minDistance = double.MaxValue;
+            for (var i = 1; i < points.Count; i++) {
                 var a = points[i - 1];
                 var b = points[i];
-                if (InBetween(a, point, b)) {
-                    double distance = PerpendicularDistance(point, a, b);
-                    if (distance < minDistance) {
-                        bestPosition = i;
-                        minDistance = distance;
-                    }
-                }
+                if (!InBetween(a, point, b)) continue;
+                var distance = PerpendicularDistance(point, a, b);
+                if (!(distance < minDistance)) continue;
+                bestPosition = i;
+                minDistance = distance;
             }
             return bestPosition;
         }
 
         private bool InBetween(PointO start, PointO mid, PointO end) {
-            double alpha = FindAngle(mid, start, end);
-            double beta = FindAngle(mid, end, start);
+            var alpha = FindAngle(mid, start, end);
+            var beta = FindAngle(mid, end, start);
             return (alpha <= 90 && beta <= 90);
         }
 
         private double FindAngle(PointO a, PointO b, PointO c) {
             // reference: https://stackoverflow.com/questions/19729831/angle-between-3-points-in-3d-space
-            double[] v1 = new double[2] { a.X - b.X, a.Y - b.Y };
-            double[] v2 = new double[2] { c.X - b.X, c.Y - b.Y };
-            double v1mag = Math.Sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
-            double v2mag = Math.Sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
-            double[] v1norm = new double[2] { v1[0] / v1mag, v1[1] / v1mag };
-            double[] v2norm = new double[2] { v2[0] / v2mag, v2[1] / v2mag };
-            double res = v1norm[0] * v2norm[0] + v1norm[1] * v2norm[1];
+            var v1 = new double[] { a.X - b.X, a.Y - b.Y };
+            var v2 = new double[] { c.X - b.X, c.Y - b.Y };
+            var v1Mag = Math.Sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
+            var v2Mag = Math.Sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
+            var v1Norm = new[] { v1[0] / v1Mag, v1[1] / v1Mag };
+            var v2Norm = new[] { v2[0] / v2Mag, v2[1] / v2Mag };
+            var res = v1Norm[0] * v2Norm[0] + v1Norm[1] * v2Norm[1];
             return Math.Acos(res) * 180.0 / 3.141592653589793;
         }
 
         private double PerpendicularDistance(PointO point, PointO lineA, PointO lineB) {
             // reference: https://math.stackexchange.com/questions/637922/how-can-i-find-coefficients-a-b-c-given-two-points
-            int a = lineA.Y - lineB.Y;
-            int b = -(lineA.X - lineB.X);
-            int c = lineA.X * lineB.Y - lineB.X * lineA.Y;
+            var a = lineA.Y - lineB.Y;
+            var b = -(lineA.X - lineB.X);
+            var c = lineA.X * lineB.Y - lineB.X * lineA.Y;
             return PerpendicularDistance(point, a, b, c);
         }
 
@@ -110,8 +107,8 @@ namespace drawing_toolkit.model.drawable {
         }
 
         private Point[] GetPrimitivePoints() {
-            Point[] pPoints = new Point[points.Count];
-            for (int i = 0; i < points.Count; i++) pPoints[i] = points[i].GetPoint();
+            var pPoints = new Point[points.Count];
+            for (var i = 0; i < points.Count; i++) pPoints[i] = points[i].GetPoint();
             return pPoints;
         }
     }

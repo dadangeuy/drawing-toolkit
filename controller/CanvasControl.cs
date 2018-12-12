@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Timer = System.Timers.Timer;
 
 namespace drawing_toolkit.controller {
-    class CanvasControl : Panel {
+    internal class CanvasControl : Panel {
         private readonly Canvas canvas = new Canvas();
 
         public CanvasControl() {

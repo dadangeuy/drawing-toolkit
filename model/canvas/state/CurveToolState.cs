@@ -3,27 +3,27 @@ using drawing_toolkit.model.drawable;
 using drawing_toolkit.model.drawable.state;
 
 namespace drawing_toolkit.model.canvas.state {
-    class CurveToolState : CanvasState {
+    internal class CurveToolState : CanvasState {
         public static readonly CurveToolState Instance = new CurveToolState();
-        private static ToolMode Mode { get; set; } = ToolMode.CREATE;
-        private static DrawableCurve Curve { get; set; } = null;
-        private static PointO CurvePoint { get; set; } = null;
+        private static ToolMode Mode { get; set; } = ToolMode.Create;
+        private static DrawableCurve Curve { get; set; }
+        private static PointO CurvePoint { get; set; }
 
         public override void MouseDown(Canvas canvas, PointO location) {
             switch (Mode) {
-                case ToolMode.CREATE:
+                case ToolMode.Create:
                     Curve = new DrawableCurve(location, location);
                     canvas.Drawables.AddLast(Curve);
-                    Mode = ToolMode.RESIZE;
+                    Mode = ToolMode.Resize;
                     break;
-                case ToolMode.ADD_CURVE:
+                case ToolMode.AddCurve:
                     if (Curve.Intersect(location)) {
                         Curve.AddCurve(location);
                         CurvePoint = location;
-                        Mode = ToolMode.MOVE_CURVE;
+                        Mode = ToolMode.MoveCurve;
                     } else {
                         Curve.State = LockState.Instance;
-                        Mode = ToolMode.CREATE;
+                        Mode = ToolMode.Create;
                     }
                     break;
             }
@@ -31,10 +31,10 @@ namespace drawing_toolkit.model.canvas.state {
 
         public override void MouseMove(Canvas canvas, PointO location) {
             switch (Mode) {
-                case ToolMode.RESIZE:
+                case ToolMode.Resize:
                     Curve.SetEndPoint(location);
                     break;
-                case ToolMode.MOVE_CURVE:
+                case ToolMode.MoveCurve:
                     var offset = PointO.OffsetOf(CurvePoint, location);
                     CurvePoint.Offset(offset);
                     break;
@@ -43,17 +43,17 @@ namespace drawing_toolkit.model.canvas.state {
 
         public override void MouseUp(Canvas canvas, PointO location) {
             switch (Mode) {
-                case ToolMode.RESIZE:
-                    Mode = ToolMode.ADD_CURVE;
+                case ToolMode.Resize:
+                    Mode = ToolMode.AddCurve;
                     break;
-                case ToolMode.MOVE_CURVE:
-                    Mode = ToolMode.ADD_CURVE;
+                case ToolMode.MoveCurve:
+                    Mode = ToolMode.AddCurve;
                     break;
             }
         }
 
         private enum ToolMode {
-            CREATE, RESIZE, ADD_CURVE, MOVE_CURVE
+            Create, Resize, AddCurve, MoveCurve
         }
     }
 }
