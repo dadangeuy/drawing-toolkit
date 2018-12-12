@@ -2,11 +2,9 @@
 using drawing_toolkit.model.drawable;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace drawing_toolkit.model.canvas {
     class Canvas {
-        public DrawableLine CreateLineState_Line { get; set; }
         public CanvasState State { get; set; } = CreateLineState.Instance;
         private readonly LinkedList<IDrawable> drawables = new LinkedList<IDrawable>();
 
@@ -34,5 +32,11 @@ namespace drawing_toolkit.model.canvas {
             foreach (var drawable in drawables)
                 drawable.Draw(graphics);
         }
+
+        // State Context
+        public DrawableLine CreateLineState_Line { get; set; }
+        public DrawableCurve CreateDrawableState_Curve { get; set; }
+        public DrawableCurve AddCurvePointState_Curve { get; set; }
+        public int AddCurvePointState_CurveId = -1;
     }
 }

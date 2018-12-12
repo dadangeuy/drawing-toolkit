@@ -18,6 +18,10 @@ namespace drawing_toolkit.controller {
             canvas.State = CreateLineState.Instance;
         }
 
+        public void SelectCurveTool() {
+            canvas.State = CreateCurveState.Instance;
+        }
+
         private void InitializeUi() {
             Dock = DockStyle.Fill;
             BackColor = Color.White;

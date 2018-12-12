@@ -20,6 +20,7 @@ namespace drawing_toolkit {
 
         private void InitializeEvent() {
             tools.SelectLineTool += (sender, args) => canvas.SelectLineTool();
+            tools.SelectCurveTool += (sender, args) => canvas.SelectCurveTool();
         }
     }
 }
