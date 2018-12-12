@@ -1,15 +1,15 @@
-﻿using drawing_toolkit.model.drawable;
+﻿using drawing_toolkit.common;
+using drawing_toolkit.model.drawable;
 using drawing_toolkit.model.drawable.state;
-using System.Drawing;
 
 namespace drawing_toolkit.model.canvas.state {
     class CurveToolState : CanvasState {
         public static readonly CurveToolState Instance = new CurveToolState();
         private static ToolMode Mode { get; set; } = ToolMode.CREATE;
         private static DrawableCurve Curve { get; set; } = null;
-        private static int CurveId;
+        private static PointO CurvePoint { get; set; } = null;
 
-        public override void MouseDown(Canvas canvas, Point location) {
+        public override void MouseDown(Canvas canvas, PointO location) {
             switch (Mode) {
                 case ToolMode.CREATE:
                     Curve = new DrawableCurve(location, location);
@@ -18,7 +18,8 @@ namespace drawing_toolkit.model.canvas.state {
                     break;
                 case ToolMode.ADD_CURVE:
                     if (Curve.Intersect(location)) {
-                        CurveId = Curve.AddCurve(location);
+                        Curve.AddCurve(location);
+                        CurvePoint = location;
                         Mode = ToolMode.MOVE_CURVE;
                     } else {
                         Curve.State = LockState.Instance;
@@ -28,18 +29,19 @@ namespace drawing_toolkit.model.canvas.state {
             }
         }
 
-        public override void MouseMove(Canvas canvas, Point location) {
+        public override void MouseMove(Canvas canvas, PointO location) {
             switch (Mode) {
                 case ToolMode.RESIZE:
                     Curve.SetEndPoint(location);
                     break;
                 case ToolMode.MOVE_CURVE:
-                    Curve.MoveCurve(CurveId, location);
+                    var offset = PointO.OffsetOf(CurvePoint, location);
+                    CurvePoint.Offset(offset);
                     break;
             }
         }
 
-        public override void MouseUp(Canvas canvas, Point location) {
+        public override void MouseUp(Canvas canvas, PointO location) {
             switch (Mode) {
                 case ToolMode.RESIZE:
                     Mode = ToolMode.ADD_CURVE;

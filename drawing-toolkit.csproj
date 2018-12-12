@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="common\PointO.cs" />
     <Compile Include="controller\CanvasControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -61,7 +62,7 @@
     <Compile Include="model\canvas\Canvas.cs" />
     <Compile Include="model\canvas\CanvasState.cs" />
     <Compile Include="model\canvas\state\CurveToolState.cs" />
-    <Compile Include="model\canvas\state\SelectionState.cs" />
+    <Compile Include="model\canvas\state\SelectionToolState.cs" />
     <Compile Include="model\drawable\DrawableCurve.cs" />
     <Compile Include="model\drawable\DrawableState.cs" />
     <Compile Include="model\drawable\Drawable.cs" />

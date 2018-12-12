@@ -1,4 +1,5 @@
-﻿using drawing_toolkit.model.drawable.state;
+﻿using drawing_toolkit.common;
+using drawing_toolkit.model.drawable.state;
 using System.Drawing;
 
 namespace drawing_toolkit.model.drawable {
@@ -7,7 +8,7 @@ namespace drawing_toolkit.model.drawable {
         public void Draw(Graphics graphics) { State.Draw(this, graphics); }
         public abstract void DrawItem(Graphics graphics);
         public abstract void DrawGuide(Graphics graphics);
-        public abstract bool Intersect(Point point);
-        public abstract void Move(Point offset);
+        public abstract bool Intersect(PointO point);
+        public abstract void Move(PointO offset);
     }
 }
