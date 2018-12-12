@@ -64,6 +64,7 @@
     <Compile Include="model\canvas\state\CurveToolState.cs" />
     <Compile Include="model\canvas\state\SelectionToolState.cs" />
     <Compile Include="model\drawable\DrawableCurve.cs" />
+    <Compile Include="model\drawable\DrawableGroup.cs" />
     <Compile Include="model\drawable\state\DrawableState.cs" />
     <Compile Include="model\drawable\Drawable.cs" />
     <Compile Include="model\drawable\state\EditState.cs" />

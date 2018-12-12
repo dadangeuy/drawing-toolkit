@@ -3,6 +3,9 @@ using drawing_toolkit.model.canvas.state;
 using drawing_toolkit.model.drawable;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+using drawing_toolkit.model.drawable.state;
 
 namespace drawing_toolkit.model.canvas {
     internal class Canvas {
@@ -21,7 +24,20 @@ namespace drawing_toolkit.model.canvas {
             State.MouseUp(this, new PointO(location));
         }
 
+        public void KeyDown(bool shift, bool ctrl, Keys keys) {
+            State.KeyDown(this, shift, ctrl, keys);
+        }
+
+        public void KeyUp(bool shift, bool ctrl, Keys keys) {
+            State.KeyUp(this, shift, ctrl, keys);
+        }
+
+        public void LockDrawables() {
+            foreach (var drawable in Drawables) drawable.State = LockState.Instance;
+        }
+
         public void Draw(Graphics graphics) {
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
             foreach (var drawable in Drawables) drawable.Draw(graphics);
         }
     }

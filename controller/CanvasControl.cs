@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Timer = System.Timers.Timer;
 
 namespace drawing_toolkit.controller {
-    internal class CanvasControl : Panel {
+    internal class CanvasControl : Control {
         private readonly Canvas canvas = new Canvas();
 
         public CanvasControl() {
@@ -34,6 +34,8 @@ namespace drawing_toolkit.controller {
             MouseDown += (sender, args) => canvas.MouseDown(args.Location);
             MouseMove += (sender, args) => canvas.MouseMove(args.Location);
             MouseUp += (sender, args) => canvas.MouseUp(args.Location);
+            KeyDown += (sender, args) => canvas.KeyDown(args.Shift, args.Control, args.KeyCode);
+            KeyUp += (sender, args) => canvas.KeyUp(args.Shift, args.Control, args.KeyCode);
         }
 
         private void InitializeRefreshRate() {
