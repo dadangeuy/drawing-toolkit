@@ -23,8 +23,10 @@ namespace drawing_toolkit.model.canvas.state {
 
         // set to
         public override void MouseUp(Canvas canvas, Point location) {
-            canvas.CreateLineState_Line.To = location;
-            canvas.CreateLineState_Line = null;
+            if (canvas.CreateLineState_Line != null) {
+                canvas.CreateLineState_Line.To = location;
+                canvas.CreateLineState_Line = null;
+            }
         }
     }
 }

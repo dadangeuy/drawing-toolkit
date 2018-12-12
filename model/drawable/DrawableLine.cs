@@ -8,5 +8,9 @@ namespace drawing_toolkit.model.drawable {
         public void Draw(Graphics graphics) {
             graphics.DrawLine(Pens.Black, From, To);
         }
+
+        public void DrawGuide(Graphics graphics) {
+
+        }
     }
 }

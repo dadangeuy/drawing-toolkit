@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace drawing_toolkit.model.canvas.state {
     class AddCurvePointState : CanvasState {
@@ -12,6 +11,9 @@ namespace drawing_toolkit.model.canvas.state {
             if (curve.Intersect(location)) {
                 int curveId = curve.AddCurve(location);
                 canvas.AddCurvePointState_CurveId = curveId;
+            } else {
+                canvas.RemoveGuide(curve);
+                canvas.State = CreateCurveState.Instance;
             }
         }
 

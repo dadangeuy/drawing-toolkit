@@ -50,15 +50,12 @@ namespace drawing_toolkit.model.drawable {
         }
 
         public void Draw(Graphics graphics) {
-            DrawGuide(graphics);
             graphics.DrawCurve(DrawPen, points.ToArray());
         }
 
         public void DrawGuide(Graphics graphics) {
             graphics.DrawLines(LineGuidePen, points.ToArray());
-            foreach (var point in points) {
-                graphics.DrawEllipse(CurvePointGuidePen, point.X - 2, point.Y - 2, 4, 4);
-            }
+            foreach (var point in points) graphics.DrawEllipse(CurvePointGuidePen, point.X - 2, point.Y - 2, 4, 4);
         }
 
         private int FindBestPosition(Point point) {
