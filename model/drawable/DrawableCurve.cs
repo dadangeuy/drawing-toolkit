@@ -58,16 +58,26 @@ namespace drawing_toolkit.model.drawable {
 
         public override bool Intersect(PointO point) {
             var minDistance = double.MaxValue;
+
+            // distance from curve point
+            for (var i = 0; i < points.Count; i++) {
+                var distance = PythagorasDistance(point, points[i]);
+                minDistance = Math.Min(minDistance, distance);
+                if (minDistance < IntersectDistanceLimit) return true;
+            }
+
+            // distance from curve line
             for (var i = 1; i < points.Count; i++) {
                 var a = points[i - 1];
                 var b = points[i];
                 if (InBetween(a, point, b)) {
                     var distance = PerpendicularDistance(point, a, b);
                     minDistance = Math.Min(minDistance, distance);
+                    if (minDistance < IntersectDistanceLimit) return true;
                 }
             }
 
-            return minDistance <= IntersectDistanceLimit;
+            return false;
         }
 
         private int FindBestPointPosition(PointO point) {
